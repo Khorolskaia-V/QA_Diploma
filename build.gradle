@@ -3,8 +3,8 @@ plugins {
     id 'io.qameta.allure' version '2.11.2'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
+group 'ru.netology'
+version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
 
@@ -26,7 +26,7 @@ allure {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     testImplementation 'mysql:mysql-connector-java:8.0.33'
-    testImplementation 'com.codeborne:selenide:6.17.0'
+    testImplementation 'com.codeborne:selenide:6.17.1'
     testCompileOnly 'org.projectlombok:lombok:1.18.28'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
     testImplementation 'commons-dbutils:commons-dbutils:1.7'
@@ -35,9 +35,13 @@ dependencies {
     testImplementation 'org.postgresql:postgresql:42.2.23.jre7'
 }
 
+configurations {
+    testCompile
+}
+
 test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
     systemProperty 'datasource.url', System.getProperty('datasource.url', 'jdbc:mysql://localhost:3306/app')
-    systemProperty 'datasource.url', System.getProperty('datasource.url', 'jdbc:postgresql://localhost:5432/app')
+    // systemProperty 'datasource.url', System.getProperty('datasource.url', 'jdbc:postgresql://localhost:5432/app')
 }
