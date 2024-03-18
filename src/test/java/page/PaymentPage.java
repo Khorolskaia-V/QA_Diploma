@@ -6,12 +6,16 @@ import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 
+import static com.codeborne.selenide.CollectionCondition.size;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
 public class PaymentPage {
+    private SelenideElement buyButton = $(byText("Купить"));
+    private SelenideElement buyByCreditButton = $(byText("Купить в кредит"));
     private SelenideElement cardNumberInput = $("[placeholder='0000 0000 0000 0000']");
     private SelenideElement monthInput = $("[placeholder='08']");
     private SelenideElement yearInput = $("[placeholder='22']");
@@ -22,7 +26,7 @@ public class PaymentPage {
     private SelenideElement errorMessage = $(byText("Ошибка! Банк отказал в проведении операции."));
     private SelenideElement emptyInputMessage = $(byText("Поле обязательно для заполнения"));
     private SelenideElement invalidFormatMessage = $(byText("Неверный формат"));
-    private SelenideElement ivalidMonthMessage = $(byText("Неверно указан срок действия карты"));
+    private SelenideElement invalidDateMessage = $(byText("Неверно указан срок действия карты"));
     private SelenideElement expiredCardMessage = $(byText("Истёк срок действия карты"));
 
     public void clearForm() {
@@ -33,6 +37,14 @@ public class PaymentPage {
         cvcInput.doubleClick().sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
     }
 
+    public void startPay() {
+        buyButton.click();
+    }
+
+    public void startCreditPay() {
+        buyByCreditButton.click();
+    }
+
     public void fillCardData(DataHelper.Card card) {
         cardNumberInput.setValue(card.getNumber());
         monthInput.setValue(card.getMonth());
@@ -41,7 +53,34 @@ public class PaymentPage {
         cvcInput.setValue(card.getCvc());
     }
 
-    public void checkSuccessMessage() {
-        successMessage.should(visible, Duration.ofSeconds(10));
+    public void submit() {
+        continueButton.click();
     }
+
+    public void checkSuccessMessage() {
+        successMessage.should(visible, Duration.ofSeconds(15));
+    }
+
+    public void checkErrorMessage() {
+        errorMessage.should(visible, Duration.ofSeconds(15));
+    }
+
+    public void checkIvalidFormatMessage() {
+        invalidFormatMessage.shouldBe(visible);
+    }
+
+    public Integer getNumberValueLength() {
+        String value = cardNumberInput.getValue();
+        if (value == null) return 0;
+        return value.length();
+    }
+
+    public void checkInvalidDateMessage() {
+        invalidDateMessage.shouldBe(visible);
+    }
+
+    public void checkExpiredCardMessage() {
+        expiredCardMessage.shouldBe(visible);
+    }
+
 }

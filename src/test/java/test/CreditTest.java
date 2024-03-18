@@ -5,15 +5,12 @@ import data.DBHelper;
 import data.DataHelper;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
-import page.MainPage;
 import page.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-class PaymentTest {
-
+public class CreditTest {
     private DataHelper dataHelper = new DataHelper();
 
     @BeforeAll
@@ -24,13 +21,12 @@ class PaymentTest {
     @BeforeEach
     public void setUp() {
         // Configuration.headless = true;
-        //DBHelper.clear();
         open("http://localhost:6009");
     }
 
     @AfterEach
     void clean() {
-        // DBHelper.clear();
+        DBHelper.clear();
     }
 
     @AfterAll
@@ -40,12 +36,13 @@ class PaymentTest {
     }
 
     @Test
-    void shouldSuccessPayWithApprovedCard() {
-        MainPage mainPage = new MainPage();
-        PaymentPage paymentPage = mainPage.deafultPay();
-        paymentPage.fillCardData(dataHelper.createFirstCard());
+    void shouldSuccessCreditPay() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startCreditPay();
+        paymentPage.fillCardData(dataHelper.createApprovedCard());
+        paymentPage.submit();
         paymentPage.checkSuccessMessage();
-        String lastPaymentStatus = DBHelper.getLastPaymentStatus();
+        String lastPaymentStatus = DBHelper.getLastCreditPaymentStatus();
         assertEquals("APPROVED", lastPaymentStatus);
     }
 }
