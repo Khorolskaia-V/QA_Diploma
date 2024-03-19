@@ -42,7 +42,7 @@ class DebitTest {
         // DBHelper.clear();
     }
 
-    @Story("Успешная оплата по действующей карте")
+    @Story("Успешная покупка тура по карте со статусом APPROVED")
     @Test
     void shouldSuccessPayWithApprovedCard() {
         PaymentPage paymentPage = new PaymentPage();
@@ -54,7 +54,7 @@ class DebitTest {
         assertEquals(APPROVED, lastPaymentStatus);
     }
 
-    @Story("Отклонение оплаты")
+    @Story("Отклонение покупки о тура по карте со статусом с DECLINED")
     @Test
     void shouldErrorPayWithDeclinedCard() {
         PaymentPage paymentPage = new PaymentPage();
@@ -115,7 +115,19 @@ class DebitTest {
         assertEquals(DECLINED, lastPaymentStatus);
     }
 
-    @Story("Проверка обязательности поля номер карты")
+    @Story("Успешная оплата. Фамилия и имя с дефисом")
+    @Test
+    void shouldSuccessPayDoubleLastLastAndFirstNameOwner() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWithDoubleFirstAndLastNameOwner());
+        paymentPage.submit();
+        paymentPage.checkSuccessMessage();
+        String lastPaymentStatus = DBHelper.getLastPaymentStatus();
+        assertEquals(APPROVED, lastPaymentStatus);
+    }
+
+    @Story("Проверка обязательности заполнения поля номер карты")
     @Test
     void shouldValidateCardNumber() {
         PaymentPage paymentPage = new PaymentPage();
@@ -293,6 +305,112 @@ class DebitTest {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createInvalidYearCard());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+    }
+
+    @Story("Валидация пустого года")
+    @Test
+    void shouldValidateEmptyYear() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createEmptyYearCard());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+    }
+
+    @Story("Ввод фамилии и имени по одной букве")
+    @Test
+    void shouldErrorWhenNameAndLastNameByOneLetter() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWithOneSymbolsInName());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+        // баг
+    }
+
+    @Story("Ввод фамилии и имени по 35 символов")
+    @Test
+    void shouldErrorWhenNameAndLastNameBy35Letters() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWith35SymbolsInName());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+        // баг
+    }
+
+    @Story("Ввод фамилии и имени кириллицей")
+    @Test
+    void shouldErrorWhenNameIsCyrillicLetters() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWithCyrillicSymbolsName());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+        // баг
+    }
+
+    @Story("Ввод фамилии и имени цифрами")
+    @Test
+    void shouldErrorWhenNameIsNumbers() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWithNumberSymbolsName());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+        // баг
+    }
+
+    @Story("Ввод фамилии и имени без пробелов")
+    @Test
+    void shouldErrorWhenNameWithoutWhitespace() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWithoutWhitespace());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+        // баг
+    }
+
+    @Story("Пустое поле Владелец")
+    @Test
+    void shouldErrorWhenNameIsEmpty() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWithEmptyName());
+        paymentPage.submit();
+        paymentPage.checkRequiredFieldMessage();
+    }
+
+    @Story("Пустое поле CVC")
+    @Test
+    void shouldErrorWhenCvcIsEmpty() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createEmptyCvcCard());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+        //,fu надписи
+    }
+
+    @Story("CVC из одного символа")
+    @Test
+    void shouldErrorWhenCvcIsOneNumber() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createOneNumberCvc());
+        paymentPage.submit();
+        paymentPage.checkIvalidFormatMessage();
+    }
+
+    @Story("CVC из букв")
+    @Test
+    void shouldErrorWhenCvcIsLetters() {
+        PaymentPage paymentPage = new PaymentPage();
+        paymentPage.startPay();
+        paymentPage.fillCardData(dataHelper.createCvcWIthLetters());
         paymentPage.submit();
         paymentPage.checkIvalidFormatMessage();
     }

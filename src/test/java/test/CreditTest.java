@@ -3,11 +3,13 @@ package test;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import data.DBHelper;
 import data.DataHelper;
+import io.qameta.allure.Story;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
 import page.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
+import static data.DataHelper.APPROVED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CreditTest {
@@ -35,14 +37,15 @@ public class CreditTest {
         // DBHelper.clear();
     }
 
+    @Story("Успешная покупка тура по карте со статусом APPROVED")
     @Test
-    void shouldSuccessCreditPay() {
+    void shouldSuccessPayWithApprovedCard() {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createApprovedCard());
         paymentPage.submit();
         paymentPage.checkSuccessMessage();
         String lastPaymentStatus = DBHelper.getLastCreditPaymentStatus();
-        assertEquals("APPROVED", lastPaymentStatus);
+        assertEquals(APPROVED, lastPaymentStatus);
     }
 }

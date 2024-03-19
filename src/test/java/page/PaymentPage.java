@@ -83,4 +83,6 @@ public class PaymentPage {
         expiredCardMessage.shouldBe(visible);
     }
 
+    public void checkRequiredFieldMessage() { emptyInputMessage.shouldBe(visible); }
+
 }

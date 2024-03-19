@@ -14,6 +14,7 @@ public class DataHelper {
 
     public static String DECLINED = "DECLINED";
     private static final Faker faker = new Faker(Locale.ENGLISH);
+    private static final Faker cyrillicFaker = new Faker(new Locale("ru", "RU"));
     public class Card {
 
         public Card(
@@ -116,6 +117,58 @@ public class DataHelper {
     public Card createDeclinedCardWithDoubleLastNamedOwner() {
         Card card = createDeclinedCard();
         card.setOwner(generateDoubleLastNameOwner());
+        return card;
+    }
+
+    public Card createAcceptedCardWithDoubleFirstAndLastNameOwner() {
+        Card card = createApprovedCard();
+        card.setOwner(generateDoubleFirstAndLastNameOwner());
+        return card;
+    }
+
+    public Card createAcceptedCardWithOneSymbolsInName() {
+        Card card = createApprovedCard();
+        card.setOwner(faker.letterify("?") + " " + faker.letterify("?"));
+        return card;
+    }
+
+    public Card createAcceptedCardWith35SymbolsInName() {
+        Card card = createApprovedCard();
+        String lastName = faker.letterify("????????????????????????????????????");
+        String firstName = faker.letterify("????????????????????????????????????");
+        System.out.println(lastName);
+        card.setOwner(lastName + " " + firstName);
+        return card;
+    }
+
+    public Card createAcceptedCardWithCyrillicSymbolsName() {
+        Card card = createApprovedCard();
+        String lastName = cyrillicFaker.name().lastName().toUpperCase();
+        String firstName = cyrillicFaker.name().firstName().toUpperCase();
+        System.out.println(lastName);
+        card.setOwner(lastName + " " + firstName);
+        return card;
+    }
+
+    public Card createAcceptedCardWithNumberSymbolsName() {
+        Card card = createApprovedCard();
+        String lastName = faker.numerify("#####");
+        String firstName = faker.numerify("########");
+        card.setOwner(lastName + " " + firstName);
+        return card;
+    }
+
+    public Card createAcceptedCardWithoutWhitespace() {
+        Card card = createApprovedCard();
+        String lastName = faker.name().lastName().toUpperCase();
+        String firstName = faker.name().firstName().toUpperCase();
+        card.setOwner(lastName + firstName);
+        return card;
+    }
+
+    public Card createAcceptedCardWithEmptyName() {
+        Card card = createApprovedCard();
+        card.setOwner("");
         return card;
     }
 
@@ -236,6 +289,24 @@ public class DataHelper {
         return card;
     }
 
+    public Card createEmptyCvcCard() {
+        Card card = createApprovedCard();
+        card.setCvc("");
+        return card;
+    }
+
+    public Card createOneNumberCvc() {
+        Card card = createApprovedCard();
+        card.setCvc(faker.numerify("?"));
+        return card;
+    }
+
+    public Card createCvcWIthLetters() {
+        Card card = createApprovedCard();
+        card.setCvc(faker.letterify("###"));
+        return card;
+    }
+
     private static String getNextAfterCurrentMonth() {
         return LocalDate.now().plusMonths(1).format(DateTimeFormatter.ofPattern("MM"));
     }
@@ -268,6 +339,12 @@ public class DataHelper {
 
     private static String generateDoubleLastNameOwner() {
         String firstName = faker.name().firstName().toUpperCase();
+        String lastName = faker.name().lastName().toUpperCase() + "-" + faker.name().lastName().toUpperCase();
+        return firstName + " " + lastName;
+    }
+
+    private static String generateDoubleFirstAndLastNameOwner() {
+        String firstName = faker.name().firstName().toUpperCase() + "-" + faker.name().firstName().toUpperCase();
         String lastName = faker.name().lastName().toUpperCase() + "-" + faker.name().lastName().toUpperCase();
         return firstName + " " + lastName;
     }
