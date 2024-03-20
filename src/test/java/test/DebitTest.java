@@ -3,7 +3,6 @@ package test;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import data.DBHelper;
 import data.DataHelper;
-import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -54,7 +53,7 @@ class DebitTest {
         assertEquals(APPROVED, lastPaymentStatus);
     }
 
-    @Story("Отклонение покупки о тура по карте со статусом с DECLINED")
+    @Story("Отклонение покупки тура по карте со статусом с DECLINED")
     @Test
     void shouldErrorPayWithDeclinedCard() {
         PaymentPage paymentPage = new PaymentPage();
@@ -157,7 +156,7 @@ class DebitTest {
         paymentPage.checkIvalidFormatMessage();
     }
 
-    @Story("Валидация лишнего ввода номера карты")
+    @Story("Валидация ввода лишней цифры в номер карты")
     @Test
     void shouldValidateLongerInputValue() {
         PaymentPage paymentPage = new PaymentPage();
@@ -187,7 +186,7 @@ class DebitTest {
         paymentPage.checkIvalidFormatMessage();
     }
 
-    @Story("Ошибка оплаты при вводе просроченной карты")
+    @Story("Ошибка оплаты  запроса с указанием числа предыдущего месяца")
     @Test
     void shouldValidateExpiredCard() {
         PaymentPage paymentPage = new PaymentPage();
@@ -363,7 +362,7 @@ class DebitTest {
         // баг
     }
 
-    @Story("Ввод фамилии и имени без пробелов")
+    @Story("Ввод фамилии и имени без пробела")
     @Test
     void shouldErrorWhenNameWithoutWhitespace() {
         PaymentPage paymentPage = new PaymentPage();
