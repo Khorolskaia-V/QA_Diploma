@@ -34,35 +34,32 @@
 ```
  `docker-compose up`
 ```
-
 2. Запускаем SUT:
 
-+ для MySQL:
-
-    + В консоле ввести команду:
++  В консоли ввести команду для MySQL:
+    
  ```
- java "-Dspring.datasource.url=jdbc:mysql://localhost:3306/app" -jar artifacts/aqa-shop.jar
+ java "-Dspring.datasource.url=jdbc:mysql://localhost:3306/app" -jar artifacts/aqa-shop.jar --server.port=6009
    ```
-+ для PostgreSQL:
-    + В консоле ввести команду:
++ В консоли ввести команду для PostgreSQL:
+    
+```
+java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" -jar artifacts/aqa-shop.jar --server.port=6009
 
 ```
-java "-Dspring.datasource.url=jdbc:postgresql://localhost:5432/app" -jar artifacts/aqa-shop.jar
-```
-
-3. В новой вкладке терминала запустить приложение командой:
-```
-java -jar ./artifacts/aqa-shop.jar
-```
-
 4. Убедиться в готовности системы. Приложение должно быть доступно по адресу:
 ```
-http://localhost:8009/
+http://localhost:6009/
 ```
 ### Запуск тестов
-В новой вкладке терминала запустить тесты:
+В новой вкладке терминала запустить тесты.
++ для MySQL:
 ```
-./gradlew clean test
+./gradlew clean test "-Ddatasource.url=jdbc:mysql://localhost:3306/app"
+```
++ для PostgreSQL:
+```
+./gradlew clean test "-Ddatasource.url=jdbc:postgresql://localhost:5432/app"
 ```
 ### Формирование отчёта о тестировании
 Для формирования отчётности через Allure, в новой вкладке терминала вводим команду

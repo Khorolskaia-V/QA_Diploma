@@ -10,8 +10,6 @@ import org.junit.jupiter.api.*;
 import page.PaymentPage;
 
 import static com.codeborne.selenide.Selenide.open;
-import static data.DataHelper.APPROVED;
-import static data.DataHelper.DECLINED;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Feature("Покупка по дебетовой карте")
@@ -49,7 +47,7 @@ class DebitTest {
         paymentPage.submit();
         paymentPage.checkSuccessMessage();
         String lastPaymentStatus = DBHelper.getLastPaymentStatus();
-        assertEquals(APPROVED, lastPaymentStatus);
+        assertTrue(DataHelper.isPaymentStatusApproved(lastPaymentStatus));
     }
 
     @Story("Отклонение покупки тура по карте со статусом с DECLINED")
@@ -61,7 +59,7 @@ class DebitTest {
         paymentPage.submit();
         paymentPage.checkErrorMessage();
         String lastPaymentStatus = DBHelper.getLastPaymentStatus();
-        assertEquals(DECLINED, lastPaymentStatus);
+        assertTrue(DataHelper.isPaymentStatusDeclined(lastPaymentStatus));
         // баг
     }
 
@@ -74,7 +72,7 @@ class DebitTest {
         paymentPage.submit();
         paymentPage.checkSuccessMessage();
         String lastPaymentStatus = DBHelper.getLastPaymentStatus();
-        assertEquals(APPROVED, lastPaymentStatus);
+        assertTrue(DataHelper.isPaymentStatusApproved(lastPaymentStatus));
     }
 
     @Story("Отклонение оплаты. Имя с дефисом")
@@ -86,7 +84,7 @@ class DebitTest {
         paymentPage.submit();
         paymentPage.checkErrorMessage();
         String lastPaymentStatus = DBHelper.getLastPaymentStatus();
-        assertEquals(DECLINED, lastPaymentStatus);
+        assertTrue(DataHelper.isPaymentStatusDeclined(lastPaymentStatus));
     }
 
     @Story("Успешная оплата. Фамилия с дефисом")
@@ -98,7 +96,7 @@ class DebitTest {
         paymentPage.submit();
         paymentPage.checkSuccessMessage();
         String lastPaymentStatus = DBHelper.getLastPaymentStatus();
-        assertEquals(APPROVED, lastPaymentStatus);
+        assertTrue(DataHelper.isPaymentStatusApproved(lastPaymentStatus));
     }
 
     @Story("Отклонение оплаты. Фамилия с дефисом")
@@ -110,7 +108,7 @@ class DebitTest {
         paymentPage.submit();
         paymentPage.checkErrorMessage();
         String lastPaymentStatus = DBHelper.getLastPaymentStatus();
-        assertEquals(DECLINED, lastPaymentStatus);
+        assertTrue(DataHelper.isPaymentStatusDeclined(lastPaymentStatus));
     }
 
     @Story("Успешная оплата. Фамилия и имя с дефисом")
@@ -122,7 +120,7 @@ class DebitTest {
         paymentPage.submit();
         paymentPage.checkSuccessMessage();
         String lastPaymentStatus = DBHelper.getLastPaymentStatus();
-        assertEquals(APPROVED, lastPaymentStatus);
+        assertTrue(DataHelper.isPaymentStatusApproved(lastPaymentStatus));
     }
 
     @Story("Проверка обязательности заполнения поля номер карты")

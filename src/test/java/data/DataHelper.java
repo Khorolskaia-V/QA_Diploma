@@ -2,6 +2,7 @@ package data;
 
 import com.github.javafaker.Faker;
 import lombok.Getter;
+import lombok.Value;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,301 +11,395 @@ import java.util.Locale;
 
 public class DataHelper {
 
-    public static String APPROVED = "APPROVED";
+    private static String APPROVED = "APPROVED";
 
-    public static String DECLINED = "DECLINED";
+    private static String DECLINED = "DECLINED";
     private static final Faker faker = new Faker(Locale.ENGLISH);
     private static final Faker cyrillicFaker = new Faker(new Locale("ru", "RU"));
+
+    @Value
     public class Card {
-
-        public Card(
-                String number,
-                String month,
-                String year,
-                String owner,
-                String cvc
-        ) {
-            this.number = number;
-            this.month = month;
-            this.year = year;
-            this.owner = owner;
-            this.cvc = cvc;
-        }
-
-        public void setNumber(String number) {
-            this.number = number;
-        }
-
-        @Getter
-        private String number;
-        private String month;
-
-        private String year;
-        private String owner;
-        private String cvc;
-
-        public String getMonth() {
-            return month;
-        }
-
-        public void setMonth(String month) {
-            this.month = month;
-        }
-
-        public String getYear() {
-            return year;
-        }
-
-        public void setYear(String year) {
-            this.year = year;
-        }
-
-        public String getOwner() {
-            return owner;
-        }
-
-        public void setOwner(String owner) {
-            this.owner = owner;
-        }
-
-        public String getCvc() {
-            return cvc;
-        }
-
-        public void setCvc(String cvc) {
-            this.cvc = cvc;
-        }
+        String number;
+        String month;
+        String year;
+        String owner;
+        String cvc;
     }
 
     public Card createApprovedCard() {
         return new Card(
-                "4444 4444 4444 4441",
+                DataHelper.getApprovedCardNumber(),
                 DataHelper.getNextAfterCurrentMonth(),
                 DataHelper.getNextYearAfterCurrent(),
-                "IVAN IVANOV",
-                "123"
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
         );
     }
 
     public Card createDeclinedCard() {
         return new Card(
-                "4444 4444 4444 4442",
+                DataHelper.getDeclinedCardNumber(),
                 DataHelper.getNextAfterCurrentMonth(),
                 DataHelper.getNextYearAfterCurrent(),
-                "IVAN IVANOV",
-                "123"
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
         );
     }
 
+    public static String getApprovedCardNumber() {
+        return "4444 4444 4444 4441";
+    }
+
+    public static String getDeclinedCardNumber() {
+        return "4444 4444 4444 4442";
+    }
+
     public Card createApprovedCardWithDoubleFirstNamedOwner() {
-        Card card = createApprovedCard();
-        card.setOwner(generateDoubleFirstNameOwner());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateDoubleFirstNameOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createDeclinedCardWithDoubleFirstNamedOwner() {
-        Card card = createDeclinedCard();
-        card.setOwner(generateDoubleFirstNameOwner());
-        return card;
+        return new Card(
+                DataHelper.getDeclinedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateDoubleFirstNameOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createApprovedCardWithDoubleLastNamedOwner() {
-        Card card = createApprovedCard();
-        card.setOwner(generateDoubleLastNameOwner());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateDoubleLastNameOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createDeclinedCardWithDoubleLastNamedOwner() {
-        Card card = createDeclinedCard();
-        card.setOwner(generateDoubleLastNameOwner());
-        return card;
+        return new Card(
+                DataHelper.getDeclinedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateDoubleLastNameOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createAcceptedCardWithDoubleFirstAndLastNameOwner() {
-        Card card = createApprovedCard();
-        card.setOwner(generateDoubleFirstAndLastNameOwner());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateDoubleFirstAndLastNameOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createAcceptedCardWithOneSymbolsInName() {
-        Card card = createApprovedCard();
-        card.setOwner(faker.letterify("?") + " " + faker.letterify("?"));
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                faker.letterify("?") + " " + faker.letterify("?"),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createAcceptedCardWith36SymbolsInName() {
-        Card card = createApprovedCard();
         String lastName = faker.letterify("?????????????????????????????????????");
         String firstName = faker.letterify("?????????????????????????????????????");
-        System.out.println(lastName);
-        card.setOwner(lastName + " " + firstName);
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                lastName + " " + firstName,
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createAcceptedCardWithCyrillicSymbolsName() {
-        Card card = createApprovedCard();
         String lastName = cyrillicFaker.name().lastName().toUpperCase();
         String firstName = cyrillicFaker.name().firstName().toUpperCase();
-        System.out.println(lastName);
-        card.setOwner(lastName + " " + firstName);
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                lastName + " " + firstName,
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createAcceptedCardWithNumberSymbolsName() {
-        Card card = createApprovedCard();
         String lastName = faker.numerify("#####");
         String firstName = faker.numerify("########");
-        card.setOwner(lastName + " " + firstName);
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                lastName + " " + firstName,
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createAcceptedCardWithoutWhitespace() {
-        Card card = createApprovedCard();
         String lastName = faker.name().lastName().toUpperCase();
         String firstName = faker.name().firstName().toUpperCase();
-        card.setOwner(lastName + firstName);
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                lastName + firstName,
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createAcceptedCardWithEmptyName() {
-        Card card = createApprovedCard();
-        card.setOwner("");
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                "",
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createEmptyNumberCard() {
-        Card card = createApprovedCard();
-        card.setNumber("");
-        return card;
+        return new Card(
+                "",
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createInvalidNumberCard() {
-        Card card = createApprovedCard();
-        card.setNumber(faker.letterify("???? ???? ???? ????"));
-        return card;
+        return new Card(
+                faker.letterify("???? ???? ???? ????"),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createShorterValueNumberCard() {
-        Card card = createApprovedCard();
-        card.setNumber(faker.numerify("#### #### #### ###"));
-        return card;
+        return new Card(
+                faker.numerify("#### #### #### ###"),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createLongerValueNumberCard() {
-        Card card = createApprovedCard();
-        card.setNumber(faker.numerify("#### #### #### #####"));
-        return card;
+        return new Card(
+                faker.numerify("#### #### #### #####"),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createOutOfRangeMonthCard() {
-        Card card = createApprovedCard();
         String invalidMonth = String.valueOf(faker.number().numberBetween(13, 99));
-        card.setMonth(invalidMonth);
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                invalidMonth,
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createInvalidMonthCard() {
-        Card card = createApprovedCard();
         String invalidMonth = String.valueOf(faker.number().numberBetween(1, 9));
-        card.setMonth(invalidMonth);
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                invalidMonth,
+                DataHelper.getNextYearAfterCurrent(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createExpiredCard() {
-        Card card = createApprovedCard();
-        card.setMonth(getPreviousMonth());
-        card.setYear(getCurrentYear());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getPreviousMonth(),
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createEmptyMonthCard() {
-        Card card = createApprovedCard();
-        card.setMonth("");
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                "",
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createLetterMonthCard() {
-        Card card = createApprovedCard();
-        card.setMonth(generateInvalidMonth());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.generateInvalidMonth(),
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createZeroMonthApprovedCard() {
-        Card card = createApprovedCard();
-        card.setMonth("00");
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                "00",
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createZeroMonthDeclinedCard() {
-        Card card = createDeclinedCard();
-        card.setMonth("00");
-        return card;
+        return new Card(
+                DataHelper.getDeclinedCardNumber(),
+                "00",
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createPreviousYearApprovedCard() {
-        Card card = createApprovedCard();
-        card.setYear(getPrevousYear());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getPrevousYear(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createPreviousYearDeclinedCard() {
-        Card card = createDeclinedCard();
-        card.setYear(getPrevousYear());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getPrevousYear(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createPlusSixYearApprovedCard() {
-        Card card = createApprovedCard();
-        card.setYear(getPlusSixYears());
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getPlusSixYears(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createPlusSixYearDeclinedCard() {
-        Card card = createDeclinedCard();
-        card.setYear(getPlusSixYears());
-        return card;
+        return new Card(
+                DataHelper.getDeclinedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getPlusSixYears(),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createEmptyYearCard() {
-        Card card = createApprovedCard();
-        card.setYear("");
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                "",
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createOneSymbolYearAcceptedCard() {
-        Card card = createApprovedCard();
-        card.setYear(String.valueOf(faker.numerify("#")));
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                String.valueOf(faker.numerify("#")),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createOneSymbolYearDeclinedCard() {
-        Card card = createDeclinedCard();
-        card.setYear(String.valueOf(faker.numerify("#")));
-        return card;
+        return new Card(
+                DataHelper.getDeclinedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                String.valueOf(faker.numerify("#")),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createInvalidYearCard() {
-        Card card = createDeclinedCard();
-        card.setYear(String.valueOf(faker.letterify("?")));
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                String.valueOf(faker.letterify("?")),
+                DataHelper.generateValidOwner(),
+                DataHelper.generateValidCvc()
+        );
     }
 
     public Card createEmptyCvcCard() {
-        Card card = createApprovedCard();
-        card.setCvc("");
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                ""
+        );
     }
 
     public Card createOneNumberCvc() {
-        Card card = createApprovedCard();
-        card.setCvc(faker.numerify("?"));
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                faker.numerify("?")
+        );
     }
 
     public Card createCvcWIthLetters() {
-        Card card = createApprovedCard();
-        card.setCvc(faker.letterify("###"));
-        return card;
+        return new Card(
+                DataHelper.getApprovedCardNumber(),
+                DataHelper.getNextAfterCurrentMonth(),
+                DataHelper.getCurrentYear(),
+                DataHelper.generateValidOwner(),
+                faker.letterify("###")
+        );
+    }
+
+    public static Boolean isPaymentStatusApproved(String paymentStatus) {
+        return paymentStatus.equals(DataHelper.APPROVED);
+    }
+
+    public static Boolean isPaymentStatusDeclined(String paymentStatus) {
+        return paymentStatus.equals(DataHelper.DECLINED);
     }
 
     private static String getNextAfterCurrentMonth() {
@@ -347,6 +442,17 @@ public class DataHelper {
         String firstName = faker.name().firstName().toUpperCase() + "-" + faker.name().firstName().toUpperCase();
         String lastName = faker.name().lastName().toUpperCase() + "-" + faker.name().lastName().toUpperCase();
         return firstName + " " + lastName;
+    }
+
+    private static String generateValidOwner() {
+        String firstName = faker.name().firstName().toUpperCase();
+        String lastName = faker.name().lastName().toUpperCase();
+
+        return lastName + " " + firstName;
+    }
+
+    private static String generateValidCvc() {
+        return faker.numerify("###");
     }
 
     private static String generateInvalidMonth() {
