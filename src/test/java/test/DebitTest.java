@@ -38,7 +38,6 @@ class DebitTest {
     @AfterAll
     static void tearDownAll() {
         SelenideLogger.removeListener("allure");
-        // DBHelper.clear();
     }
 
     @Story("Успешная покупка тура по карте со статусом APPROVED")
@@ -133,7 +132,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createEmptyNumberCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Блокирование ввода латиницы в поле номер карты")
@@ -143,7 +142,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createInvalidNumberCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация неполного ввода номера карты")
@@ -153,7 +152,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createShorterValueNumberCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация ввода лишней цифры в номер карты")
@@ -183,7 +182,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createInvalidMonthCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Ошибка оплаты  запроса с указанием числа предыдущего месяца")
@@ -203,7 +202,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createEmptyMonthCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Блокирование ввода латиницы в поле месяц")
@@ -213,7 +212,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createLetterMonthCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Неверный формат при вводе в месяц 00. Approved")
@@ -223,7 +222,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createZeroMonthApprovedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -234,7 +233,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createZeroMonthDeclinedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -243,7 +242,7 @@ class DebitTest {
     void shouldAcceptedCardErrorWhenPreviousYear() {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startPay();
-        paymentPage.fillCardData(dataHelper.createPrviousYearApprovedCard());
+        paymentPage.fillCardData(dataHelper.createPreviousYearDeclinedCard());
         paymentPage.submit();
         paymentPage.checkExpiredCardMessage();
     }
@@ -253,7 +252,7 @@ class DebitTest {
     void shouldDeclinedCardErrorWhenPreviousYear() {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startPay();
-        paymentPage.fillCardData(dataHelper.createPrviousYearDeclinedCard());
+        paymentPage.fillCardData(dataHelper.createPreviousYearDeclinedCard());
         paymentPage.submit();
         paymentPage.checkExpiredCardMessage();
     }
@@ -285,7 +284,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createOneSymbolYearAcceptedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация неполного ввода года. Accepted")
@@ -295,7 +294,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createOneSymbolYearDeclinedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация ввода года латиницей")
@@ -305,7 +304,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createInvalidYearCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация пустого года")
@@ -315,7 +314,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createEmptyYearCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Ввод фамилии и имени по одной букве")
@@ -325,7 +324,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithOneSymbolsInName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -334,9 +333,9 @@ class DebitTest {
     void shouldErrorWhenNameAndLastNameBy35Letters() {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startPay();
-        paymentPage.fillCardData(dataHelper.createAcceptedCardWith35SymbolsInName());
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWith36SymbolsInName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -347,7 +346,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithCyrillicSymbolsName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -358,7 +357,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithNumberSymbolsName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -369,7 +368,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithoutWhitespace());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -390,7 +389,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createEmptyCvcCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         //,fu надписи
     }
 
@@ -401,7 +400,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createOneNumberCvc());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("CVC из букв")
@@ -411,7 +410,7 @@ class DebitTest {
         paymentPage.startPay();
         paymentPage.fillCardData(dataHelper.createCvcWIthLetters());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
 }

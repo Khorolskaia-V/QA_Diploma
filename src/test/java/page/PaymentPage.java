@@ -65,7 +65,7 @@ public class PaymentPage {
         errorMessage.should(visible, Duration.ofSeconds(15));
     }
 
-    public void checkIvalidFormatMessage() {
+    public void checkInvalidFormatMessage() {
         invalidFormatMessage.shouldBe(visible);
     }
 

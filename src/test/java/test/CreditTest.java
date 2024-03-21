@@ -129,7 +129,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createEmptyNumberCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Блокирование ввода латиницы в поле номер карты")
@@ -139,7 +139,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createInvalidNumberCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация неполного ввода номера карты")
@@ -149,7 +149,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createShorterValueNumberCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация лишнего ввода номера карты")
@@ -179,7 +179,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createInvalidMonthCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Ошибка оплаты  запроса с указанием числа предыдущего месяца")
@@ -199,7 +199,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createEmptyMonthCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Блокирование ввода латиницы в поле месяц")
@@ -209,7 +209,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createLetterMonthCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Неверный формат при вводе в месяц 00. Approved")
@@ -219,7 +219,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createZeroMonthApprovedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -230,7 +230,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createZeroMonthDeclinedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -239,7 +239,7 @@ public class CreditTest {
     void shouldAcceptedCardErrorWhenPreviousYear() {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startCreditPay();
-        paymentPage.fillCardData(dataHelper.createPrviousYearApprovedCard());
+        paymentPage.fillCardData(dataHelper.createPreviousYearApprovedCard());
         paymentPage.submit();
         paymentPage.checkExpiredCardMessage();
     }
@@ -249,7 +249,7 @@ public class CreditTest {
     void shouldDeclinedCardErrorWhenPreviousYear() {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startCreditPay();
-        paymentPage.fillCardData(dataHelper.createPrviousYearDeclinedCard());
+        paymentPage.fillCardData(dataHelper.createPreviousYearDeclinedCard());
         paymentPage.submit();
         paymentPage.checkExpiredCardMessage();
     }
@@ -281,7 +281,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createOneSymbolYearAcceptedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация неполного ввода года. Accepted")
@@ -291,7 +291,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createOneSymbolYearDeclinedCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация ввода года латиницей")
@@ -301,7 +301,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createInvalidYearCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Валидация пустого года")
@@ -311,7 +311,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createEmptyYearCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("Ввод фамилии и имени по одной букве")
@@ -321,7 +321,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithOneSymbolsInName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -330,9 +330,9 @@ public class CreditTest {
     void shouldErrorWhenNameAndLastNameBy35Letters() {
         PaymentPage paymentPage = new PaymentPage();
         paymentPage.startCreditPay();
-        paymentPage.fillCardData(dataHelper.createAcceptedCardWith35SymbolsInName());
+        paymentPage.fillCardData(dataHelper.createAcceptedCardWith36SymbolsInName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -343,7 +343,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithCyrillicSymbolsName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -354,7 +354,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithNumberSymbolsName());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -365,7 +365,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createAcceptedCardWithoutWhitespace());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
         // баг
     }
 
@@ -386,7 +386,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createEmptyCvcCard());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
 
     }
 
@@ -397,7 +397,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createOneNumberCvc());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
     @Story("CVC из букв")
@@ -407,7 +407,7 @@ public class CreditTest {
         paymentPage.startCreditPay();
         paymentPage.fillCardData(dataHelper.createCvcWIthLetters());
         paymentPage.submit();
-        paymentPage.checkIvalidFormatMessage();
+        paymentPage.checkInvalidFormatMessage();
     }
 
 }
