@@ -18,9 +18,10 @@
 Подробно с дипломным заданием можно ознакомиться по [ссылке](https://github.com/netology-code/qa-diploma)
 
 ## Тестовая документация
-[План тестирования](https://github.com/Khorolskaia-V/QA_Diploma/blob/main/documents/Plan.md)
-[Отчёт по итогам тестирования](https://github.com/Khorolskaia-V/QA_Diploma/blob/main/documents/Report.md)
-[Отчёт по итогам автоматизации](https://github.com/Khorolskaia-V/QA_Diploma/blob/main/documents/Summary.md)
+
++ [План тестирования](https://github.com/Khorolskaia-V/QA_Diploma/blob/main/documents/Plan.md)
++ [Отчёт по итогам тестирования](https://github.com/Khorolskaia-V/QA_Diploma/blob/main/documents/Report.md)
++ [Отчёт по итогам автоматизации](https://github.com/Khorolskaia-V/QA_Diploma/blob/main/documents/Summary.md)
 
 ## Запуск приложения
 ### Подготовительный этап
